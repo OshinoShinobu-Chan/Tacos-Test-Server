@@ -1,0 +1,19 @@
+[server]
+bind_address = "[::]"
+bind_port = 14001
+concurrency = 16
+channel_size = 1024
+tmp_file_dir = "/mnt/nas/tmp/tacos_test_server"
+upload_file_size_limit_bytes = 5242880 # 5 MB
+
+[queue]
+max_requests = 100
+max_results = 1000
+
+[test]
+time_limit_secs = 1800
+
+[test.lab_command]
+Lab1 = ["bash", "/root/tacos_test_server/lab_script.sh", "/mnt/nas/tmp/tacos_test_server", "$FILE", "lab1"]
+Lab2 = ["bash", "/root/tacos_test_server/lab_script.sh", "/mnt/nas/tmp/tacos_test_server", "$FILE", "lab2"]
+Lab3 = ["bash", "/root/tacos_test_server/lab_script.sh", "/mnt/nas/tmp/tacos_test_server", "$FILE", "lab3"]
