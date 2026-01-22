@@ -6,7 +6,10 @@ submit_file=$(echo $2 | sed 's/.*\///g')
 lab_name=$3
 docker_image="crimmypeng/tacos:rust-1.92"
 
-docker run --name "$submit_file" --rm -t -v "$tmp_dir":/workspace "$docker_image" bash -c "
+docker run --name "$submit_file" \
+    --rm -t -v "$tmp_dir":/workspace \
+    -m 4g --cpus=16 --tmpfs /testspce:size=10g \
+    "$docker_image" bash -c "
     set -euxo pipefail;
     cp -r /workspace/Tacos /testspace;
     rm -rf /testspace/src;

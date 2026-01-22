@@ -92,8 +92,10 @@ def lab_task(
             if json_data["status"] == "Processing":
                 uploaded_size += json_data["progress"]
                 print(f"\rUploaded {uploaded_size}/{total_size} bytes", end='', flush=True)
-            elif json_data["status"] == "FileUpdateCompleted":
+            elif json_data["status"] == "FileUploadCompleted":
                 print("\nFile upload and processing completed.")
+            elif json_data["status"] == "TooManyRequests":
+                raise Exception("Server is busy. Too many requests.")
             elif json_data["status"] == "OK":
                 uuid = json_data["uuid"]
                 print(f"Server response OK with UUID: {json_data['uuid']}")

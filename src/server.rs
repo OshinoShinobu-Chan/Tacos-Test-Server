@@ -189,7 +189,9 @@ impl Server {
                         let frame = Frame::data(Bytes::from(data));
                         Some((Ok(frame), status.set_status(2)))
                     } else {
-                        let data = "Too many requests.".to_string();
+                        let data = format!(
+                            "{{\"status\": \"TooManyRequests\", \"message\": \"Too many reqeusts\"}}"
+                        );
                         let frame = Frame::data(Bytes::from(data));
                         Self::cleanup_tmp_file(&status.tmp_file_path);
                         Some((Ok(frame), status.set_status(2)))
@@ -385,7 +387,7 @@ async fn write_body_to_content(
     }
     return Some((
         Ok(Frame::data(Bytes::from(
-            "{\"status\": \"FileUpdateCompleted\"}\n".to_string(),
+            "{\"status\": \"FileUploadCompleted\"}\n".to_string(),
         ))),
         status.set_status(1),
     ));
