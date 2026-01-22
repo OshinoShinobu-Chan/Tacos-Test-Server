@@ -123,6 +123,8 @@ Queue thread can also send a cancel signal to a worker to cancel a running task.
 
 Worker thread runs a test task. You can write a test script, and set the `test.lab_command` in configuration. You can alse set the the time limit of a test task in configuration.
 
+You can find the test scripts for tacos at `lab_script.sh`.
+
 ## Configurations
 
 You set the server's config by writing a toml file as configuration file.
@@ -161,3 +163,8 @@ Lab1 = ["bash", "/root/tacos_test_server/lab_script.sh", "/mnt/nas/tmp/tacos_tes
 Lab2 = ["bash", "/root/tacos_test_server/lab_script.sh", "/mnt/nas/tmp/tacos_test_server", "$FILE", "lab2"]
 Lab3 = ["bash", "/root/tacos_test_server/lab_script.sh", "/mnt/nas/tmp/tacos_test_server", "$FILE", "lab3"]
 ```
+
+## TODO list
+
+[ ] Add lines limitation to the test result output.
+[ ] Add some system test.
