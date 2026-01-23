@@ -52,10 +52,7 @@ pub enum WorkerStatus {
     Busy,
 }
 
-#[derive(Debug)]
 pub struct RequestResponse {
-    /// Unique identifier for the request
-    pub id: String,
     /// The status of the request
     pub status: RequestStatus,
     /// The detailed output of the request
@@ -237,7 +234,6 @@ impl Queue {
 
                 while let Some(res) = results.pop_front() {
                     let response = RequestResponse {
-                        id: request_id.clone(),
                         status: if res.result_code == ResultCode::Processing {
                             RequestStatus::Processing
                         } else {
@@ -269,7 +265,6 @@ impl Queue {
                 }
                 log::info!("Request {:?} is queued in rank {}.", request_id, pos + 1);
                 let response = RequestResponse {
-                    id: request_id.clone(),
                     status: RequestStatus::Queued(pos + 1),
                     test_result: None,
                 };
@@ -279,7 +274,6 @@ impl Queue {
             } else {
                 log::warn!("Request {:?} not found.", request_id);
                 let response = RequestResponse {
-                    id: request_id.clone(),
                     status: RequestStatus::NotFound,
                     test_result: None,
                 };

@@ -30,8 +30,8 @@ use std::pin::Pin;
 use std::sync::mpsc::{SyncSender, sync_channel};
 
 use futures::stream;
+use http_body_util::Empty;
 use http_body_util::{BodyExt, StreamBody, combinators::BoxBody};
-use http_body_util::{Empty, Full};
 use hyper::body::{Bytes, Frame};
 use hyper::service::Service;
 use hyper::{Request, Response, StatusCode, body::Incoming as IncomingBody};
@@ -311,12 +311,6 @@ impl Service<Request<IncomingBody>> for Server {
 
 fn empty() -> BoxBody<Bytes, hyper::Error> {
     Empty::<Bytes>::new()
-        .map_err(|never| match never {})
-        .boxed()
-}
-
-fn full<T: Into<Bytes>>(chunk: T) -> BoxBody<Bytes, hyper::Error> {
-    Full::new(chunk.into())
         .map_err(|never| match never {})
         .boxed()
 }

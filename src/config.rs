@@ -39,11 +39,6 @@ impl Default for ServerConfig {
 }
 
 impl ServerConfig {
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
-        let content = std::fs::read_to_string(path)?;
-        let config: ServerConfig = toml::from_str(&content)?;
-        Ok(config)
-    }
     /// Get the full bind address as a string
     pub fn get_bind_addr(&self) -> String {
         format!("{}:{}", self.bind_address, self.bind_port)
@@ -69,14 +64,6 @@ impl Default for QueueConfig {
     }
 }
 
-impl QueueConfig {
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
-        let content = std::fs::read_to_string(path)?;
-        let config: QueueConfig = toml::from_str(&content)?;
-        Ok(config)
-    }
-}
-
 #[derive(Debug, Clone, serde::Deserialize)]
 pub struct TestConfig {
     /// Time limit for each test in seconds
@@ -94,14 +81,6 @@ impl Default for TestConfig {
             time_limit_secs: 1800,
             lab_command: HashMap::new(),
         }
-    }
-}
-
-impl TestConfig {
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
-        let content = std::fs::read_to_string(path)?;
-        let config: TestConfig = toml::from_str(&content)?;
-        Ok(config)
     }
 }
 
