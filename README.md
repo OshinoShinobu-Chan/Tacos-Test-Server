@@ -170,7 +170,7 @@ You can run this server as a service, so that it can run quietly at background, 
 
 Here's an example service config for `systemd`.
 
-```toml
+```
 [Unit]
 Description=Tacos-Test-Server
 After=network.target
