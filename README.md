@@ -164,8 +164,42 @@ Lab2 = ["bash", "/root/tacos_test_server/lab_script.sh", "/mnt/nas/tmp/tacos_tes
 Lab3 = ["bash", "/root/tacos_test_server/lab_script.sh", "/mnt/nas/tmp/tacos_test_server", "$FILE", "lab3"]
 ```
 
+## Run this server as a service
+
+You can run this server as a service, so that it can run quietly at background, restart on failure and start automatically when host starts.
+
+Here's an example service config for `systemd`.
+
+```toml
+[Unit]
+Description=Tacos-Test-Server
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/tacos_test_server /root/.tacos-test-server/config.toml
+User=root
+Restart=on-failure
+RestartSec=5s
+
+# These three are important for the server to run docker
+NoNewPrivileges=false
+AppArmorProfile=unconfined
+# Add your tmp file directory here
+ReadWritePaths=/root/tacos_test_server /mnt/nas/tmp/tacos_test_server /var/run/docker.sock
+
+PrivateTmp=true
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target
+```
+
 ## TODO list
 
 [ ] Add a way to gracefully stop the server (cleanup all the things before stop).
+
 [ ] Add lines limitation to the test result output.
+
 [ ] Add some system test.
