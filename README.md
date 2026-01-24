@@ -198,8 +198,6 @@ WantedBy=multi-user.target
 
 ## TODO list
 
-[ ] Add a way to gracefully stop the server (cleanup all the things before stop).
-
-[ ] Add lines limitation to the test result output.
-
-[ ] Add some system test.
+* [ ] Add a way to gracefully stop the server (cleanup all the things before stop).
+* [ ] Add lines limitation to the test result output.
+* [ ] Add some system test.
