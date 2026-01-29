@@ -294,7 +294,10 @@ impl Queue {
             if let Some(index) = self.requests.iter().position(|req| &req.id == &id) {
                 self.requests.remove(index);
             }
-            let _ = send_cancel_signal(self.request_cancel_channel.remove(&id).as_ref().unwrap());
+            let cancel_channel = self.request_cancel_channel.remove(&id);
+            if let Some(channel) = cancel_channel {
+                let _ = send_cancel_signal(&channel);
+            }
             log::info!(
                 "Cleaned up monitor response channel and result for request: {:?}",
                 id
