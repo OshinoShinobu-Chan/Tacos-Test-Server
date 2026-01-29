@@ -1,7 +1,7 @@
 //! # Server Queue
 //!
 //! This module defines a unified request queue for the server.
-use std::collections::{HashMap, VecDeque};
+use std::collections::{HashMap, HashSet, VecDeque};
 use std::sync::mpsc::{Receiver, SyncSender};
 use tokio::sync::mpsc as tokio_mpsc;
 
@@ -215,7 +215,7 @@ impl Queue {
             self.monitor_response_channel.insert(request_id, sender);
         }
 
-        let mut completed_id = Vec::new();
+        let mut completed_id = HashSet::new();
         let mut send_data = Vec::new();
 
         for (request_id, sender) in self.monitor_response_channel.iter() {
@@ -251,7 +251,7 @@ impl Queue {
 
                 if is_completed {
                     log::debug!("Request {:?} completed.", request_id);
-                    completed_id.push(request_id.clone());
+                    completed_id.insert(request_id.clone());
                 } else {
                     self.recent_monitor_result
                         .insert(request_id.clone(), RequestStatus::Processing);
@@ -277,7 +277,7 @@ impl Queue {
                     status: RequestStatus::NotFound,
                     test_result: None,
                 };
-                completed_id.push(request_id.clone());
+                completed_id.insert(request_id.clone());
                 send_data.push((sender.clone(), response, request_id));
                 self.recent_monitor_result
                     .insert(request_id.clone(), RequestStatus::NotFound);
@@ -285,7 +285,7 @@ impl Queue {
         }
         for (sender, response, request_id) in send_data {
             if send_response(&sender, response).is_err() {
-                completed_id.push(request_id.clone());
+                completed_id.insert(request_id.clone());
             }
         }
         for id in completed_id {
